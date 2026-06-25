@@ -261,6 +261,7 @@ const StaffListPage = () => {
         columns={columns}
         data={staff}
         loading={loading}
+        selectedRowIds={selectedIds}
         pagination={{
           page,
           limit,

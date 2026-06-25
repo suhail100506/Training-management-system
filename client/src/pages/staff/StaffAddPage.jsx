@@ -212,6 +212,9 @@ const StaffAddPage = () => {
                       selected={field.value}
                       onChange={(val) => field.onChange(val)}
                       dateFormat="dd/MM/yyyy"
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
                       className="w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none dark:text-white"
                     />
                   )}
@@ -234,6 +237,9 @@ const StaffAddPage = () => {
                       selected={field.value}
                       onChange={(val) => field.onChange(val)}
                       dateFormat="dd/MM/yyyy"
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
                       className="w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none dark:text-white"
                     />
                   )}

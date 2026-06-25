@@ -199,6 +199,9 @@ const AuditLogPage = () => {
                 placeholderText="Start Date"
                 selected={startDate}
                 onChange={(val) => setStartDate(val)}
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
                 className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-250 rounded-lg text-slate-700 dark:bg-slate-950 dark:border-slate-800 dark:text-white"
               />
             </div>
@@ -209,6 +212,9 @@ const AuditLogPage = () => {
                 placeholderText="End Date"
                 selected={endDate}
                 onChange={(val) => setEndDate(val)}
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
                 className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-250 rounded-lg text-slate-700 dark:bg-slate-950 dark:border-slate-800 dark:text-white"
               />
             </div>

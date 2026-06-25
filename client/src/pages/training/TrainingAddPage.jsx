@@ -423,6 +423,9 @@ const TrainingAddPage = () => {
                           }
                         }}
                         dateFormat="dd/MM/yyyy"
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                         className={`w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
                           errors.startDateOfTraining ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                         }`}
@@ -449,6 +452,9 @@ const TrainingAddPage = () => {
                         dateFormat="dd/MM/yyyy"
                         minDate={watchStartDate}
                         disabled={!watchStartDate}
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                         className={`w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
                           errors.endDateOfTraining ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                         }`}
@@ -476,6 +482,9 @@ const TrainingAddPage = () => {
                         dateFormat="dd/MM/yyyy"
                         minDate={watchStartDate}
                         disabled={!watchStartDate}
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
                         className={`w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
                           errors.requestProcessedDate ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                         }`}

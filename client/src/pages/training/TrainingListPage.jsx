@@ -223,10 +223,13 @@ const TrainingListPage = () => {
     {
       header: 'Staff Info',
       render: (row) => (
-        <div>
-          <p className="font-bold text-slate-900 dark:text-white">{row.staffNumber}</p>
-          <p className="text-[10px] text-slate-500">{row.staffName}</p>
-        </div>
+        <Link 
+          to={`/training/${row._id}/view`}
+          className="block group hover:text-brand-700 dark:hover:text-brand-450"
+        >
+          <p className="font-bold text-slate-900 dark:text-white group-hover:text-brand-700 dark:group-hover:text-brand-450 transition-colors">{row.staffNumber}</p>
+          <p className="text-[10px] text-slate-500 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{row.staffName}</p>
+        </Link>
       )
     },
     { header: 'Group Name', key: 'groupName' },
@@ -567,6 +570,7 @@ const TrainingListPage = () => {
         columns={columns} 
         data={records} 
         loading={loading}
+        selectedRowIds={selectedIds}
         pagination={{
           page,
           limit,

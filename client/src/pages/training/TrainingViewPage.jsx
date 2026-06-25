@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Edit, Calendar, User, Clock, IndianRupee, Award, MapPin } from 'lucide-react';
+import { ArrowLeft, Edit, Calendar, User, Clock, IndianRupee, Award, MapPin, Trash2 } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 
 import * as trainingApi from '../../api/training.api';
 import { formatDate, formatCurrency } from '../../utils/formatters';
 import PageTitle from '../../components/common/PageTitle';
 import StatusBadge from '../../components/common/StatusBadge';
+import ConfirmDialog from '../../components/common/ConfirmDialog';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +16,22 @@ const TrainingViewPage = () => {
   const navigate = useNavigate();
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      await trainingApi.deleteTrainingRecord(record._id);
+      toast.success('Training record deleted successfully.');
+      setTimeout(() => {
+        navigate('/training');
+      }, 1500);
+    } catch (err) {
+      console.error('Deletion error:', err);
+      toast.error('Failed to delete training record.');
+    } finally {
+      setConfirmOpen(false);
+    }
+  };
 
   useEffect(() => {
     const fetchRecord = async () => {
@@ -60,13 +77,23 @@ const TrainingViewPage = () => {
           />
         </div>
 
-        <Link
-          to={`/training/${record._id}/edit`}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold rounded-xl shadow-md transition-all"
-        >
-          <Edit className="w-3.5 h-3.5" />
-          <span>Edit Record</span>
-        </Link>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setConfirmOpen(true)}
+            className="inline-flex items-center space-x-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Delete Record</span>
+          </button>
+
+          <Link
+            to={`/training/${record._id}/edit`}
+            className="inline-flex items-center space-x-1.5 px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold rounded-xl shadow-md transition-all"
+          >
+            <Edit className="w-3.5 h-3.5" />
+            <span>Edit Record</span>
+          </Link>
+        </div>
       </div>
 
       {/* Details Grid */}
@@ -227,6 +254,14 @@ const TrainingViewPage = () => {
         </div>
 
       </div>
+
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Record Deletion"
+        message="Are you sure you want to delete this training record? This action cannot be undone."
+      />
 
       <ToastContainer position="top-right" autoClose={5000} />
     </div>

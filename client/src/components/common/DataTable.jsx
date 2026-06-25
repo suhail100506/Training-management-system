@@ -5,7 +5,8 @@ const DataTable = ({
   columns,
   data = [],
   loading = false,
-  pagination = null
+  pagination = null,
+  selectedRowIds = []
 }) => {
   // Render pulse loader placeholders
   const renderSkeletons = () => {
@@ -46,18 +47,28 @@ const DataTable = ({
                 </td>
               </tr>
             ) : (
-              data.map((row, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className="hover:bg-slate-50/50 dark:hover:bg-slate-850/20 transition-colors duration-150 text-slate-700 dark:text-slate-350 text-xs"
-                >
-                  {columns.map((col, colIndex) => (
-                    <td key={colIndex} className="px-6 py-4 whitespace-nowrap">
-                      {col.render ? col.render(row, rowIndex) : row[col.key]}
-                    </td>
-                  ))}
-                </tr>
-              ))
+              data.map((row, rowIndex) => {
+                const isSelected = selectedRowIds?.includes(row._id);
+                return (
+                  <tr
+                    key={rowIndex}
+                    className={`${
+                      isSelected ? 'font-semibold text-slate-900 dark:text-white' : ''
+                    } hover:bg-slate-50/50 dark:hover:bg-slate-850/20 transition-colors duration-150 text-slate-700 dark:text-slate-350 text-xs`}
+                  >
+                    {columns.map((col, colIndex) => (
+                      <td 
+                        key={colIndex} 
+                        className={`px-6 py-4 whitespace-nowrap transition-colors duration-150 ${
+                          isSelected ? 'bg-cyan-100/80 dark:bg-cyan-950/40' : ''
+                        }`}
+                      >
+                        {col.render ? col.render(row, rowIndex) : row[col.key]}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
