@@ -66,6 +66,11 @@ const trainingRecordSchema = new mongoose.Schema({
     required: false,
     index: true
   },
+  paymentDate: {
+    type: Date,
+    required: false,
+    index: true
+  },
   trainingStatus: {
     type: String,
     enum: Object.values(TRAINING_STATUSES),

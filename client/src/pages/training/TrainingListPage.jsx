@@ -8,7 +8,13 @@ import * as masterApi from '../../api/master.api';
 import { usePagination } from '../../hooks/usePagination';
 import useAuth from '../../hooks/useAuth';
 import { formatDate, formatCurrency } from '../../utils/formatters';
-import { TRAINING_TYPE_OPTIONS, TRAINING_MODE_OPTIONS, TRAINING_STATUS_OPTIONS } from '../../utils/constants';
+import { 
+  TRAINING_TYPE_OPTIONS, 
+  TRAINING_MODE_OPTIONS, 
+  TRAINING_STATUS_OPTIONS,
+  getFinancialYearOptions,
+  getCurrentFinancialYear
+} from '../../utils/constants';
 
 import PageTitle from '../../components/common/PageTitle';
 import DataTable from '../../components/common/DataTable';
@@ -42,7 +48,7 @@ const TrainingListPage = () => {
   const [groups, setGroups] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [types, setTypes] = useState(TRAINING_TYPE_OPTIONS);
-  const [fyOptions, setFYOptions] = useState(['FY 2023-24', 'FY 2024-25', 'FY 2025-26', 'FY 2026-27']);
+  const [fyOptions, setFYOptions] = useState(getFinancialYearOptions());
 
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -258,6 +264,10 @@ const TrainingListPage = () => {
     {
       header: 'Status',
       render: (row) => <StatusBadge status={row.trainingStatus} />
+    },
+    {
+      header: 'Payment Date',
+      render: (row) => formatDate(row.paymentDate) || '—'
     },
     {
       header: 'Cost',

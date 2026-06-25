@@ -57,6 +57,7 @@ export const userSchema = yup.object().shape({
 // Core Training Record validation schema
 export const trainingRecordSchema = yup.object().shape({
   staffNumber: yup.string().required('Staff Number is required'),
+  groupName: yup.string().nullable(),
   trainingTopic: yup.string().required('Training Topic is required'),
   trainingModuleNumber: yup
     .string()
@@ -104,6 +105,16 @@ export const trainingRecordSchema = yup.object().shape({
         return new Date(value) >= new Date(startDateOfTraining);
       }
     ),
+  paymentDate: yup
+    .date()
+    .nullable()
+    .transform((curr, orig) => {
+      if (orig === '' || orig === null || orig === undefined || orig === '-') {
+        return null;
+      }
+      return curr;
+    })
+    .typeError('Invalid Payment Date'),
   trainingStatus: yup
     .string()
     .required('Training Status is required')

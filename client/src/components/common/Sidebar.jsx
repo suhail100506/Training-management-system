@@ -83,7 +83,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
       {/* Sidebar Container */}
       <aside 
-        className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-slate-200/60 dark:border-slate-800/60 flex flex-col justify-between transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`print:hidden fixed top-0 bottom-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-slate-200/60 dark:border-slate-800/60 flex flex-col justify-between transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -188,13 +188,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
               {reportsOpen && (
                 <div className="mt-1 space-y-1">
-                  <NavLink to="/reports/monthly" className={subNavClass('/reports/monthly')} onClick={() => toggleSidebar(false)}>
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>Monthly Report</span>
-                  </NavLink>
-                  <NavLink to="/reports/quarterly" className={subNavClass('/reports/quarterly')} onClick={() => toggleSidebar(false)}>
-                    <CalendarDays className="w-3.5 h-3.5" />
-                    <span>Quarterly Report</span>
+                  <NavLink to="/reports/all-in-report" className={subNavClass('/reports/all-in-report')} onClick={() => toggleSidebar(false)}>
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>All in Report</span>
                   </NavLink>
                   <NavLink to="/reports/financial-year" className={subNavClass('/reports/financial-year')} onClick={() => toggleSidebar(false)}>
                     <FileBarChart className="w-3.5 h-3.5" />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { getCurrentFinancialYear, getFinancialYearOptions } from '../../utils/constants';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line, AreaChart, Area
@@ -25,7 +26,7 @@ const STATUS_COLORS = {
 
 const DashboardPage = () => {
   // Filters State
-  const [selectedFY, setSelectedFY] = useState('FY 2025-26');
+  const [selectedFY, setSelectedFY] = useState(getCurrentFinancialYear());
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedDivision, setSelectedDivision] = useState('');
 
@@ -118,19 +119,20 @@ const DashboardPage = () => {
         <PageTitle title="Dashboard" subtitle="System KPI statistics, coverage metrics, and training costs" />
         
         {/* Quick Filter Panel */}
-        <div className="flex items-center space-x-2 bg-white dark:bg-slate-900 p-2 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl shadow-sm text-xs font-semibold">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
+        <div className="flex items-center space-x-2 bg-white dark:bg-slate-900 p-2 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-md text-xs font-semibold print:border-none print:shadow-none print:bg-transparent hover:shadow-lg transition-all duration-300">
+          <Filter className="w-3.5 h-3.5 text-slate-400 print:hidden" />
           
           {/* FY Filter */}
           <select
             value={selectedFY}
             onChange={(e) => setSelectedFY(e.target.value)}
-            className="bg-transparent focus:outline-none dark:text-white"
+            className="bg-transparent focus:outline-none dark:text-white print:hidden"
           >
-            <option value="FY 2024-25">FY 2024-25</option>
-            <option value="FY 2025-26">FY 2025-26</option>
-            <option value="FY 2026-27">FY 2026-27</option>
+            {getFinancialYearOptions().map(fy => (
+              <option key={fy} value={fy}>{fy}</option>
+            ))}
           </select>
+          <span className="hidden print:inline dark:text-white font-bold">{selectedFY}</span>
 
           <span className="text-slate-300">|</span>
 
@@ -138,11 +140,12 @@ const DashboardPage = () => {
           <select
             value={selectedGroup}
             onChange={(e) => setSelectedGroup(e.target.value)}
-            className="bg-transparent focus:outline-none max-w-[120px] dark:text-white"
+            className="bg-transparent focus:outline-none max-w-[120px] dark:text-white print:hidden"
           >
             <option value="">Group: All</option>
             {groups.map(g => <option key={g._id} value={g.value}>{g.value}</option>)}
           </select>
+          <span className="hidden print:inline dark:text-white font-bold">{selectedGroup ? `Group: ${selectedGroup}` : 'Group: All'}</span>
 
           <span className="text-slate-300">|</span>
 
@@ -150,11 +153,12 @@ const DashboardPage = () => {
           <select
             value={selectedDivision}
             onChange={(e) => setSelectedDivision(e.target.value)}
-            className="bg-transparent focus:outline-none max-w-[120px] dark:text-white"
+            className="bg-transparent focus:outline-none max-w-[120px] dark:text-white print:hidden"
           >
             <option value="">Division: All</option>
             {divisions.map(d => <option key={d._id} value={d.value}>{d.value}</option>)}
           </select>
+          <span className="hidden print:inline dark:text-white font-bold">{selectedDivision ? `Division: ${selectedDivision}` : 'Division: All'}</span>
         </div>
       </div>
 
@@ -162,7 +166,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
         
         {/* Total records */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <FileSpreadsheet className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Records</span>
@@ -172,7 +176,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Unique trained */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <Users className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Trained</span>
@@ -182,7 +186,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Hours */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <Clock className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Hours</span>
@@ -192,7 +196,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Cost */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <IndianRupee className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Cost</span>
@@ -202,7 +206,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Coverage */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <Percent className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Coverage</span>
@@ -212,7 +216,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Beneficiaries */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-850/40 rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-1">
           <div className="flex items-center justify-between text-slate-400">
             <CheckCircle className="w-4 h-4 text-brand-700 dark:text-brand-400" />
             <span className="text-[9px] font-bold uppercase tracking-wider">Completed</span>
@@ -227,7 +231,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Chart 1: Monthly Count & Hours */}
-        <div className="md:col-span-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="md:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-3">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Monthly Trainings Trend</h4>
             <span className="text-[10px] text-slate-400 italic">Financial Year Comparison</span>
@@ -248,7 +252,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Chart 2: Status distribution (Completed / Not Completed / Cancelled) */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-3">
           <h4 className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Training Status Breakdown</h4>
           <div className="h-72 w-full text-xs relative flex items-center justify-center">
             {byStatus.length === 0 ? (
@@ -278,7 +282,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Chart 3: Cost by training type */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-3">
           <h4 className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Cost by Training Type</h4>
           <div className="h-72 w-full text-xs">
             {costByType.length === 0 ? (
@@ -298,7 +302,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Chart 4: Group Coverage */}
-        <div className="md:col-span-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="md:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-3">
           <h4 className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Training Coverage % by Group</h4>
           <div className="h-72 w-full text-xs">
             {coverageGroup.length === 0 ? (
@@ -318,7 +322,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Chart 5: Top topics */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 space-y-4">
           <h4 className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Top Training Topics</h4>
           
           <div className="space-y-3.5">

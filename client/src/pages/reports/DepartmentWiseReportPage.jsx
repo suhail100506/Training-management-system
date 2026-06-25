@@ -6,11 +6,12 @@ import PageTitle from '../../components/common/PageTitle';
 import FilterPanel from '../../components/common/FilterPanel';
 import DataTable from '../../components/common/DataTable';
 import ExportButtons from '../../components/common/ExportButtons';
+import { getCurrentFinancialYear } from '../../utils/constants';
 
 const DepartmentWiseReportPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ financialYear: 'FY 2025-26' });
+  const [filters, setFilters] = useState({ financialYear: getCurrentFinancialYear() });
 
   const fetchReport = async () => {
     setLoading(true);
@@ -58,7 +59,7 @@ const DepartmentWiseReportPage = () => {
         <ExportButtons reportType="department-wise" filters={filters} />
       </div>
 
-      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: 'FY 2025-26' })} />
+      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: getCurrentFinancialYear() })} />
 
       {/* Chart */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850/50 rounded-2xl p-5 shadow-sm space-y-3">

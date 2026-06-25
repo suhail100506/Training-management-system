@@ -46,7 +46,7 @@ const buildReportMatchQuery = (query) => {
     let dateQueryApplied = false;
 
     const fy = query.financialYear;
-    if (fy) {
+    if (fy && fy !== 'all') {
       const start = startOfFY(fy);
       const end = endOfFY(fy);
       if (start && end) {
@@ -54,6 +54,15 @@ const buildReportMatchQuery = (query) => {
         dateQuery.$lte = end;
         dateQueryApplied = true;
       }
+    }
+
+    if (query.startDate) {
+      dateQuery.$gte = new Date(query.startDate);
+      dateQueryApplied = true;
+    }
+    if (query.endDate) {
+      dateQuery.$lte = new Date(query.endDate);
+      dateQueryApplied = true;
     }
 
     // Quarters
@@ -153,7 +162,7 @@ const buildReportMatchQuery = (query) => {
   let dateQueryApplied = false;
 
   const fy = query.financialYear;
-  if (fy) {
+  if (fy && fy !== 'all') {
     const start = startOfFY(fy);
     const end = endOfFY(fy);
     if (start && end) {
@@ -161,6 +170,15 @@ const buildReportMatchQuery = (query) => {
       dateQuery.$lte = end;
       dateQueryApplied = true;
     }
+  }
+
+  if (query.startDate) {
+    dateQuery.$gte = new Date(query.startDate);
+    dateQueryApplied = true;
+  }
+  if (query.endDate) {
+    dateQuery.$lte = new Date(query.endDate);
+    dateQueryApplied = true;
   }
 
   // Quarters
@@ -723,7 +741,43 @@ const exportReport = async (req, res, next) => {
     const totalActiveStaff = await Staff.countDocuments(staffQuery) || 1;
 
     // Build matching data programmatically depending on reportType
-    if (reportType === 'monthly') {
+    if (reportType === 'all' && (filters?.coverageOnly === 'true' || filters?.coverageOnly === true)) {
+      const raw = await TrainingRecord.aggregate([
+        { $match: match },
+        {
+          $group: {
+            _id: '$groupName',
+            trainedStaff: { $addToSet: '$staffNumber' },
+            totalHours: { $sum: '$trainingDurationHours' }
+          }
+        }
+      ]);
+      const staffs = await Staff.aggregate([
+        { $match: { isDeleted: false, employmentStatus: 'Currently Serving' } },
+        { $group: { _id: '$groupName', count: { $sum: 1 } } }
+      ]);
+      
+      // Sort groups alphabetically
+      staffs.sort((a, b) => {
+        const nameA = (a._id || 'Unknown').toUpperCase();
+        const nameB = (b._id || 'Unknown').toUpperCase();
+        return nameA.localeCompare(nameB);
+      });
+
+      let serialNumber = 1;
+      reportData = staffs.map(item => {
+        const trg = raw.find(r => r._id === item._id) || { trainedStaff: [], totalHours: 0 };
+        const coverageVal = item.count > 0 ? (trg.trainedStaff.length / item.count) * 100 : 0;
+        return {
+          'S.NO': serialNumber++,
+          'Group Name': item._id || 'Unknown',
+          'No of Trainees': trg.trainedStaff.length,
+          'GROUP STRENGTH': item.count,
+          '% COVERAGE FOR THE GROUP': parseFloat(coverageVal.toFixed(2)),
+          'Time Spend on Group': trg.totalHours || 0
+        };
+      });
+    } else if (reportType === 'monthly') {
       const raw = await TrainingRecord.aggregate([
         { $match: match },
         {
@@ -924,19 +978,44 @@ const exportReport = async (req, res, next) => {
         'Module Number': r.trainingModuleNumber,
         'Training Type': r.typeOfTraining,
         Mode: r.trainingMode,
-        'Duration (Hrs)': r.trainingDurationHours,
+        'Time Spend by Staff': r.trainingDurationHours,
         'Start Date': new Date(r.startDateOfTraining).toISOString().split('T')[0],
         'End Date': new Date(r.endDateOfTraining).toISOString().split('T')[0],
         'Request Processed Date': r.requestProcessedDate ? new Date(r.requestProcessedDate).toISOString().split('T')[0] : '-',
+        'Payment Date': r.paymentDate ? new Date(r.paymentDate).toISOString().split('T')[0] : '-',
         Status: r.trainingStatus,
         'Cost (₹)': r.trainingCostPerPerson,
         Remarks: r.remarks || ''
       }));
     }
 
+    // Resolve dynamic export title
+    let exportTitle = reportType;
+    const fySuffix = filters?.financialYear ? ` _${filters.financialYear.replace(/\s+/g, '_')}` : '';
+    if (reportType === 'all') {
+      if (filters?.coverageOnly === 'true' || filters?.coverageOnly === true) {
+        exportTitle = `Groupwise Training Details${fySuffix}`;
+      } else {
+        exportTitle = `All Training Records${fySuffix}`;
+      }
+    } else {
+      const prettyReportNames = {
+        'monthly': 'Monthly Report',
+        'quarterly': 'Quarterly Report',
+        'financial-year': 'Financial Year Report',
+        'staff-wise': 'Staff-Wise Report',
+        'department-wise': 'Group-Wise Report',
+        'cost-analysis': 'Cost Analysis Report',
+        'training-status': 'Training Status Report',
+        'beneficiaries': 'Beneficiary Report'
+      };
+      const name = prettyReportNames[reportType] || reportType;
+      exportTitle = `${name}${fySuffix}`;
+    }
+
     // Export formats
     if (format === 'excel') {
-      const buffer = await excelExport.generateExcel(reportType, reportData, filters);
+      const buffer = await excelExport.generateExcel(exportTitle, reportData, filters);
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader('Content-Disposition', `attachment; filename=KMG_TMS_${reportType}_export.xlsx`);
       return res.send(buffer);
@@ -947,7 +1026,7 @@ const exportReport = async (req, res, next) => {
       return res.send(csvStr);
     } else if (format === 'pdf') {
       // Return stream / buffer
-      const docDefinition = pdfExport.generatePDFDefinition(reportType, reportData, filters);
+      const docDefinition = pdfExport.generatePDFDefinition(exportTitle, reportData, filters);
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=KMG_TMS_${reportType}_export.pdf`);
       // We will pipeline the pdf doc creation to the response

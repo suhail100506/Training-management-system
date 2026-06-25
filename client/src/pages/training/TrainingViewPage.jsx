@@ -230,6 +230,16 @@ const TrainingViewPage = () => {
             </div>
 
             <div className="space-y-1.5">
+              <p className="text-[9px] text-slate-400 uppercase tracking-wider font-extrabold flex items-center space-x-1">
+                <Calendar className="w-3.5 h-3.5 text-brand-700" />
+                <span>Payment Date</span>
+              </p>
+              <p className="font-bold text-brand-700 dark:text-brand-400 text-sm">
+                Payment Date: {record.paymentDate ? formatDate(record.paymentDate) : '—'}
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
               <p className="text-[9px] text-slate-400 uppercase tracking-wider font-extrabold">Training Status</p>
               <div>
                 <StatusBadge status={record.trainingStatus} />

@@ -24,16 +24,16 @@ const AppLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex transition-colors duration-200">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex transition-colors duration-200">
       {/* Sidebar Panel */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col lg:pl-64 min-w-0">
+      <div className="flex-1 flex flex-col lg:pl-64 print:pl-0 min-w-0">
         
         {/* Sticky warning banner about session expiration */}
         {showExpiryWarning && (
-          <div className="sticky top-0 z-50 bg-amber-500 text-slate-950 px-4 py-2 flex items-center justify-between text-xs font-semibold shadow-md border-b border-amber-600 animate-pulse">
+          <div className="print:hidden sticky top-0 z-50 bg-amber-500 text-slate-950 px-4 py-2 flex items-center justify-between text-xs font-semibold shadow-md border-b border-amber-600 animate-pulse">
             <div className="flex items-center space-x-2">
               <AlertTriangle className="w-4 h-4 animate-bounce" />
               <span>Session Expiring:</span>

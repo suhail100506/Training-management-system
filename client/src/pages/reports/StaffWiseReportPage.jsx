@@ -8,11 +8,12 @@ import FilterPanel from '../../components/common/FilterPanel';
 import DataTable from '../../components/common/DataTable';
 import ExportButtons from '../../components/common/ExportButtons';
 import StatusBadge from '../../components/common/StatusBadge';
+import { getCurrentFinancialYear } from '../../utils/constants';
 
 const StaffWiseReportPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ financialYear: 'FY 2025-26' });
+  const [filters, setFilters] = useState({ financialYear: getCurrentFinancialYear() });
 
   // Drilldown Modal State
   const [selectedStaff, setSelectedStaff] = useState(null);
@@ -128,7 +129,7 @@ const StaffWiseReportPage = () => {
         <ExportButtons reportType="staff-wise" filters={filters} />
       </div>
 
-      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: 'FY 2025-26' })} />
+      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: getCurrentFinancialYear() })} />
 
       <DataTable columns={columns} data={data} loading={loading} />
 

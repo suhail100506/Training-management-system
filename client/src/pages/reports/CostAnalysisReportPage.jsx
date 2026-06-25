@@ -6,13 +6,14 @@ import PageTitle from '../../components/common/PageTitle';
 import FilterPanel from '../../components/common/FilterPanel';
 import DataTable from '../../components/common/DataTable';
 import ExportButtons from '../../components/common/ExportButtons';
+import { getCurrentFinancialYear } from '../../utils/constants';
 
 const COLORS = ['#1F4E79', '#4675a8', '#7ba0c7', '#a9c5e3'];
 
 const CostAnalysisReportPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ financialYear: 'FY 2025-26' });
+  const [filters, setFilters] = useState({ financialYear: getCurrentFinancialYear() });
 
   const fetchReport = async () => {
     setLoading(true);
@@ -51,7 +52,7 @@ const CostAnalysisReportPage = () => {
         <ExportButtons reportType="cost-analysis" filters={filters} />
       </div>
 
-      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: 'FY 2025-26' })} />
+      <FilterPanel onApply={setFilters} onReset={() => setFilters({ financialYear: getCurrentFinancialYear() })} />
 
       {/* Cost Pie Chart & Metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

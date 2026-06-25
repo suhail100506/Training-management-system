@@ -114,6 +114,7 @@ const downloadTemplate = async (req, res, next) => {
         'Staff Number',
         'Staff Name',
         'Email ID',
+        'Group Name',
         'Training Topic',
         'Training Module Number',
         'Trainer Name',
@@ -124,6 +125,7 @@ const downloadTemplate = async (req, res, next) => {
         'Start Date',
         'End Date',
         'Request Processed Date',
+        'Payment Date',
         'Training Status',
         'Training Cost Per Person',
         'Remarks'
@@ -133,6 +135,7 @@ const downloadTemplate = async (req, res, next) => {
         'S10001',
         'abc',
         'abc@kmg.com',
+        'Product Development',
         'React and Tailwind Integration',
         'MOD-RCT-201',
         'John Doe',
@@ -143,6 +146,7 @@ const downloadTemplate = async (req, res, next) => {
         '15/06/2026',
         '17/06/2026',
         '15/06/2026',
+        '18/06/2026',
         'Completed',
         '1500',
         'Optional comment'
@@ -152,6 +156,7 @@ const downloadTemplate = async (req, res, next) => {
         ['Staff Number', 'Yes', 'String (e.g. S10001)', 'Must exist in Staff Master list.'],
         ['Staff Name', 'No', 'String (e.g. abc)', 'Optional. Full name of the staff member.'],
         ['Email ID', 'No', 'Valid email format', 'Optional. Official email address.'],
+        ['Group Name', 'No', 'String', 'Optional. Group or department name (falls back to Staff Master group if empty).'],
         ['Training Topic', 'Yes', 'String (e.g. React and Tailwind Integration)', 'Topic of the course.'],
         ['Training Module Number', 'Yes', 'Alphanumeric with dashes/underscores', 'Unique module identifier.'],
         ['Trainer Name', 'No', 'String', 'Name of instructor.'],
@@ -162,6 +167,7 @@ const downloadTemplate = async (req, res, next) => {
         ['Start Date', 'Yes', 'DD/MM/YYYY or YYYY-MM-DD', 'Date training started.'],
         ['End Date', 'Yes', 'DD/MM/YYYY or YYYY-MM-DD', 'Date training ended. Must be >= Start Date.'],
         ['Request Processed Date', 'Yes', 'DD/MM/YYYY or YYYY-MM-DD', 'Date request processed. Must be >= Start Date.'],
+        ['Payment Date', 'No', 'DD/MM/YYYY or YYYY-MM-DD', 'Optional. Date when the training payment was processed.'],
         ['Training Status', 'Yes', 'Completed, Not Completed, Cancelled', 'Status of completion.'],
         ['Training Cost Per Person', 'No', 'Number (defaults to 0)', 'Cost per staff member in ₹.'],
         ['Remarks', 'No', 'String', 'Optional remarks/notes about the training.']

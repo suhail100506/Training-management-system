@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Menu, Sun, Moon, LogOut, ChevronRight, User, Edit, X } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, ChevronRight, User, Edit, X, Download } from 'lucide-react';
 import * as userApi from '../../api/user.api';
 import { toast } from 'react-toastify';
 
@@ -61,7 +61,7 @@ const Navbar = ({ toggleSidebar }) => {
   const breadcrumbs = generateBreadcrumbs();
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-white dark:bg-slate-900 border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-colors duration-200">
+    <header className="print:hidden h-16 flex items-center justify-between px-6 bg-white dark:bg-slate-900 border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-colors duration-200">
       {/* Left section: Drawer Toggle and Breadcrumbs */}
       <div className="flex items-center space-x-4">
         <button 
@@ -96,6 +96,17 @@ const Navbar = ({ toggleSidebar }) => {
 
       {/* Right section: Dark Mode toggle & User actions */}
       <div className="flex items-center space-x-4">
+        {/* PDF Download Button for Dashboard */}
+        {location.pathname === '/dashboard' && (
+          <button 
+            onClick={() => window.print()}
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-650 dark:text-slate-350 transition-all duration-200 cursor-pointer"
+            title="Download Dashboard PDF"
+          >
+            <Download className="w-4 h-4" />
+          </button>
+        )}
+
         {/* Theme Toggle Button */}
         <button 
           onClick={toggleTheme}

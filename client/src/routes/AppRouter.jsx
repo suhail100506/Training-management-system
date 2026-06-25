@@ -44,15 +44,13 @@ import SettingsPage from '../pages/settings/SettingsPage';
 // Audit Logs
 import AuditLogPage from '../pages/audit/AuditLogPage';
 
-// Reports
-import MonthlyReportPage from '../pages/reports/MonthlyReportPage';
-import QuarterlyReportPage from '../pages/reports/QuarterlyReportPage';
 import FinancialYearReportPage from '../pages/reports/FinancialYearReportPage';
 import StaffWiseReportPage from '../pages/reports/StaffWiseReportPage';
 import DepartmentWiseReportPage from '../pages/reports/DepartmentWiseReportPage';
 import CostAnalysisReportPage from '../pages/reports/CostAnalysisReportPage';
 import TrainingStatusReportPage from '../pages/reports/TrainingStatusReportPage';
 import BeneficiaryReportPage from '../pages/reports/BeneficiaryReportPage';
+import AllInReportPage from '../pages/reports/AllInReportPage';
 
 // Error pages
 import AccessDeniedPage from '../pages/AccessDeniedPage';
@@ -166,8 +164,7 @@ const AppRouter = () => {
           />
 
           {/* Reports Pages */}
-          <Route path="reports/monthly" element={<MonthlyReportPage />} />
-          <Route path="reports/quarterly" element={<QuarterlyReportPage />} />
+          <Route path="reports/all-in-report" element={<AllInReportPage />} />
           <Route path="reports/financial-year" element={<FinancialYearReportPage />} />
           <Route path="reports/staff-wise" element={<StaffWiseReportPage />} />
           <Route path="reports/department-wise" element={<DepartmentWiseReportPage />} />

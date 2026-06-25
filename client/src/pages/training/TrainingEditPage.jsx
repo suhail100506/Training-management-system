@@ -25,21 +25,28 @@ const TrainingEditPage = () => {
   const [duplicateBanner, setDuplicateBanner] = useState(false);
   const [metaDetails, setMetaDetails] = useState(null);
   const [trainingTypes, setTrainingTypes] = useState(TRAINING_TYPE_OPTIONS.map(o => ({ value: o.value, _id: o.value })));
+  const [groups, setGroups] = useState([]);
 
-  // Fetch training types on mount
+  // Fetch dropdown data on mount
   useEffect(() => {
-    const fetchTrainingTypes = async () => {
+    const fetchDropdownData = async () => {
       try {
-        const response = await masterApi.getMasterData('typeOfTraining');
-        if (response.data.data && response.data.data.length > 0) {
-          setTrainingTypes(response.data.data);
+        const [typesRes, groupsRes] = await Promise.all([
+          masterApi.getMasterData('typeOfTraining'),
+          masterApi.getMasterData('groupName')
+        ]);
+        if (typesRes.data.data && typesRes.data.data.length > 0) {
+          setTrainingTypes(typesRes.data.data);
+        }
+        if (groupsRes.data.data && groupsRes.data.data.length > 0) {
+          setGroups(groupsRes.data.data);
         }
       } catch (err) {
-        console.error('Failed to load training types:', err);
-        toast.error('Failed to load dynamic training type options.');
+        console.error('Failed to load dynamic master details:', err);
+        toast.error('Failed to load dynamic selector options.');
       }
     };
-    fetchTrainingTypes();
+    fetchDropdownData();
   }, []);
 
   const {
@@ -67,6 +74,7 @@ const TrainingEditPage = () => {
         // Reset form values with parsed date formats
         reset({
           staffNumber: r.staffNumber,
+          groupName: r.groupName || '',
           trainingTopic: r.trainingTopic,
           trainingModuleNumber: r.trainingModuleNumber,
           trainerName: r.trainerName || '',
@@ -77,6 +85,7 @@ const TrainingEditPage = () => {
           startDateOfTraining: r.startDateOfTraining ? utcToLocalMidnight(r.startDateOfTraining) : null,
           endDateOfTraining: r.endDateOfTraining ? utcToLocalMidnight(r.endDateOfTraining) : null,
           requestProcessedDate: r.requestProcessedDate ? utcToLocalMidnight(r.requestProcessedDate) : null,
+          paymentDate: r.paymentDate ? utcToLocalMidnight(r.paymentDate) : null,
           trainingStatus: r.trainingStatus,
           trainingCostPerPerson: r.trainingCostPerPerson || 0,
           remarks: r.remarks || ''
@@ -150,7 +159,8 @@ const TrainingEditPage = () => {
         ...data,
         startDateOfTraining: formatInputDate(data.startDateOfTraining),
         endDateOfTraining: formatInputDate(data.endDateOfTraining),
-        requestProcessedDate: formatInputDate(data.requestProcessedDate)
+        requestProcessedDate: formatInputDate(data.requestProcessedDate),
+        paymentDate: formatInputDate(data.paymentDate)
       });
 
       toast.success('Training record updated successfully!');
@@ -317,6 +327,21 @@ const TrainingEditPage = () => {
                 />
               </div>
 
+              {/* Group Name (Editable dropdown) */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Group Name</label>
+                <select
+                  className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
+                    errors.groupName ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
+                  }`}
+                  {...register('groupName')}
+                >
+                  <option value="">Select Group</option>
+                  {groups.map(g => <option key={g._id} value={g.value}>{g.value}</option>)}
+                </select>
+                {errors.groupName && <p className="text-[10px] text-red-500 font-semibold">{errors.groupName.message}</p>}
+              </div>
+
               {/* Type & Mode */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Type of Training*</label>
@@ -470,6 +495,30 @@ const TrainingEditPage = () => {
                   {...register('trainingCostPerPerson')}
                 />
                 {errors.trainingCostPerPerson && <p className="text-[10px] text-red-500 font-semibold">{errors.trainingCostPerPerson.message}</p>}
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Payment Date (Optional)</label>
+                <div className="relative">
+                  <Controller
+                    control={control}
+                    name="paymentDate"
+                    render={({ field }) => (
+                      <DatePicker
+                        placeholderText="Select Payment Date"
+                        selected={field.value}
+                        onChange={(val) => field.onChange(val)}
+                        dateFormat="dd/MM/yyyy"
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        className="w-full pl-3.5 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white"
+                      />
+                    )}
+                  />
+                  <Calendar className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
+                </div>
+                {errors.paymentDate && <p className="text-[10px] text-red-500 font-semibold">{errors.paymentDate.message}</p>}
               </div>
  
               {/* Remarks (Optional) - Full Width */}

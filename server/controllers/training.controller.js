@@ -87,7 +87,7 @@ const getTrainingRecords = async (req, res, next) => {
         conditions.push({ startDateOfTraining: cond });
       }
 
-      if (financialYear) {
+      if (financialYear && financialYear !== 'all') {
         const start = startOfFY(financialYear);
         const end = endOfFY(financialYear);
         if (start && end) {
@@ -199,7 +199,7 @@ const getTrainingRecords = async (req, res, next) => {
       }
 
       // Financial Year filter
-      if (financialYear) {
+      if (financialYear && financialYear !== 'all') {
         const start = startOfFY(financialYear);
         const end = endOfFY(financialYear);
         if (start && end) {
@@ -296,6 +296,7 @@ const createTrainingRecord = async (req, res, next) => {
   try {
     const {
       staffNumber,
+      groupName,
       trainingTopic,
       trainingModuleNumber,
       trainerName,
@@ -306,6 +307,7 @@ const createTrainingRecord = async (req, res, next) => {
       startDateOfTraining,
       endDateOfTraining,
       requestProcessedDate,
+      paymentDate,
       trainingStatus,
       trainingCostPerPerson,
       remarks
@@ -351,6 +353,11 @@ const createTrainingRecord = async (req, res, next) => {
       processed = normalizeDateToUTC(requestProcessedDate);
     }
 
+    let payment = null;
+    if (paymentDate && paymentDate !== '-') {
+      payment = normalizeDateToUTC(paymentDate);
+    }
+
     if (end < start) {
       return sendError(res, 'End Date of Training cannot be before Start Date of Training', [
         { field: 'endDateOfTraining', message: 'End date cannot be before start date' }
@@ -393,7 +400,7 @@ const createTrainingRecord = async (req, res, next) => {
       staffName: staff.staffName,
       emailId: staff.emailId,
       designation: staff.designation,
-      groupName: staff.groupName,
+      groupName: groupName || staff.groupName,
       productDivisionCategory: staff.productDivisionCategory,
       reportingGLManagerName: staff.reportingGLManagerName,
       employmentStatus: staff.employmentStatus,
@@ -411,6 +418,7 @@ const createTrainingRecord = async (req, res, next) => {
       startDateOfTraining: start,
       endDateOfTraining: end,
       requestProcessedDate: processed,
+      paymentDate: payment,
       trainingStatus,
       trainingCostPerPerson: trainingCostPerPerson || 0,
       remarks: remarks || '',
@@ -461,6 +469,7 @@ const updateTrainingRecord = async (req, res, next) => {
     }
 
     const {
+      groupName,
       trainingTopic,
       trainingModuleNumber,
       trainerName,
@@ -471,6 +480,7 @@ const updateTrainingRecord = async (req, res, next) => {
       startDateOfTraining,
       endDateOfTraining,
       requestProcessedDate,
+      paymentDate,
       trainingStatus,
       trainingCostPerPerson,
       remarks
@@ -515,6 +525,15 @@ const updateTrainingRecord = async (req, res, next) => {
       }
     }
 
+    let payment = record.paymentDate;
+    if (paymentDate !== undefined) {
+      if (paymentDate === null || paymentDate === '' || paymentDate === '-') {
+        payment = null;
+      } else {
+        payment = normalizeDateToUTC(paymentDate);
+      }
+    }
+
     if (end < start) {
       return sendError(res, 'End Date cannot be before Start Date', [
         { field: 'endDateOfTraining', message: 'End date cannot be before start date' }
@@ -538,6 +557,8 @@ const updateTrainingRecord = async (req, res, next) => {
     if (startDateOfTraining !== undefined) record.startDateOfTraining = start;
     if (endDateOfTraining !== undefined) record.endDateOfTraining = end;
     if (requestProcessedDate !== undefined) record.requestProcessedDate = processed;
+    if (paymentDate !== undefined) record.paymentDate = payment;
+    if (groupName !== undefined) record.groupName = groupName;
     if (trainingStatus !== undefined) record.trainingStatus = trainingStatus;
     if (trainingCostPerPerson !== undefined) record.trainingCostPerPerson = trainingCostPerPerson;
     if (remarks !== undefined) record.remarks = remarks;

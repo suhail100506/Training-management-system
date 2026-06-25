@@ -74,6 +74,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
       startDate: ['start date', 'start date of training', 'startdate', 'startdateoftraining'],
       endDate: ['end date', 'end date of training', 'enddate', 'enddateoftraining'],
       requestProcessedDate: ['request processed date', 'request process date', 'processed date', 'requestprocesseddate'],
+      paymentDate: ['payment date', 'paymentdate', 'date of payment', 'dateofpayment'],
       trainingStatus: ['training status', 'status', 'trainingstatus'],
       trainingCostPerPerson: ['training cost per person', 'training cost', 'cost (inr)', 'cost (₹)', 'cost', 'trainingcostperperson'],
       remarks: ['remarks', 'remark', 'comments', 'comment', 'notes', 'note'],
@@ -212,6 +213,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
       const startDateVal = getVal('startDate');
       const endDateVal = getVal('endDate');
       const requestProcessedDateVal = getVal('requestProcessedDate');
+      const paymentDateVal = getVal('paymentDate');
       const trainingStatus = String(getVal('trainingStatus')).trim() || '-';
       const trainingCostPerPerson = parseFloat(getVal('trainingCostPerPerson')) || 0;
       const remarks = String(getVal('remarks')).trim() || '';
@@ -243,6 +245,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
         'Start Date': startDateVal,
         'End Date': endDateVal,
         'Request Processed Date': requestProcessedDateVal,
+        'Payment Date': paymentDateVal,
         'Training Status': trainingStatus,
         'Training Cost Per Person': trainingCostPerPerson,
         'Remarks': remarks
@@ -343,6 +346,12 @@ const processBulkUpload = async (filePath, batchId, userId) => {
         requestProcessedDate = startDate || normalizeDateToUTC(new Date());
       } else {
         requestProcessedDate = parseDateValue(requestProcessedDateVal);
+      }
+
+      let paymentDate = null;
+      const cleanPaymentDateVal = String(paymentDateVal || '').trim();
+      if (cleanPaymentDateVal && cleanPaymentDateVal !== '-') {
+        paymentDate = parseDateValue(paymentDateVal);
       }
 
       if (!startDate || !endDate || (!requestProcessedDate && !isProcessedDateHyphen)) {
@@ -475,7 +484,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
         staffName: staff.staffName,
         emailId: staff.emailId,
         designation: staff.designation,
-        groupName: staff.groupName,
+        groupName: (groupName && groupName !== '-') ? groupName : staff.groupName,
         productDivisionCategory: staff.productDivisionCategory,
         reportingGLManagerName: staff.reportingGLManagerName,
         employmentStatus: staff.employmentStatus,
@@ -492,6 +501,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
         startDateOfTraining: startDate,
         endDateOfTraining: endDate,
         requestProcessedDate,
+        paymentDate,
         trainingStatus,
         trainingCostPerPerson,
         remarks,
