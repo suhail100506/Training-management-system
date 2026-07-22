@@ -1,12 +1,12 @@
-# KMG Training Management System (TMS) - Project Documentation
+# Training Management System (TMS) - Project Documentation
 
-This document provides a comprehensive technical overview, setup guide, architecture breakdown, and interface reference for the **KMG Training Management System (TMS)**.
+This document provides a comprehensive technical overview, setup guide, architecture breakdown, and interface reference for the **Training Management System (TMS)**.
 
 ---
 
 ## 1. Project Overview & Business Value
 
-The **KMG Training Management System (TMS)** is a enterprise web portal designed to record, track, audit, and analyze training activities across the organization. It acts as a single point of truth for training records, replacing fragmented spreadsheets and manual tracking sheets.
+The **Training Management System (TMS)** is a enterprise web portal designed to record, track, audit, and analyze training activities across the organization. It acts as a single point of truth for training records, replacing fragmented spreadsheets and manual tracking sheets.
 
 ### Core Value Drivers:
 1. **Automation of Data Entry**: Denormalized schemas auto-fetch staff information from the master staff list using their unique staff numbers.
@@ -148,7 +148,7 @@ Compliance tracking ledger.
 
 ### 4.2 Local (Windows) Configuration & Start
 1. **Database Seeding**:
-   Navigate to `/server` and seed initial database states (creates the super admin credentials `superadmin@kmg.com` with password `Admin@1234`):
+   Navigate to `/server` and seed initial database states (creates the super admin credentials `superadmin@tms.com` with password `Admin@1234`):
    ```powershell
    cd server
    npm run seed
@@ -163,51 +163,7 @@ Compliance tracking ledger.
    npm run dev
    ```
 
-### 4.3 Production (Linux Server) Deployment Configuration
-When running the application on a network server, you can use the automated `migrate-linux.sh` script to set up environment configurations and run the processes in the background using `nohup`.
 
-#### 1. Automated Setup via `migrate-linux.sh`
-A helper script is provided in the project root to automate dependency installation and configuration file setup:
-```bash
-chmod +x migrate-linux.sh
-./migrate-linux.sh
-```
-
-#### 2. Background Execution via `nohup`
-You can manage the background processes using `nohup` and standard tcp port management:
-
-* **Start Backend service**:
-  ```bash
-  cd server
-  nohup node server.js > backend.log 2>&1 &
-  ```
-
-* **Start Frontend service**:
-  ```bash
-  cd client
-  nohup npm run dev -- --host > client.log 2>&1 &
-  ```
-
-* **Stop / Restart frontend service (port 5173)**:
-  ```bash
-  fuser -k 5173/tcp
-  # To start again:
-  cd client && nohup npm run dev -- --host > client.log 2>&1 &
-  ```
-
-* **Stop / Restart backend service (port 5001)**:
-  ```bash
-  fuser -k 5001/tcp
-  # To start again:
-  cd server && nohup node server.js > backend.log 2>&1 &
-  ```
-
-* **Stop both services**:
-  ```bash
-  fuser -k 5001/tcp 5173/tcp
-  ```
-
----
 
 ## 5. Navigation & Page Map Details
 

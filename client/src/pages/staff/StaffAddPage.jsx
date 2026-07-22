@@ -129,7 +129,7 @@ const StaffAddPage = () => {
               <label className="text-[10px] font-bold text-slate-700 dark:text-slate-350 uppercase tracking-wider">Email ID</label>
               <input
                 type="email"
-                placeholder="e.g. alice.cooper@kmg.com"
+                placeholder="e.g. alice.cooper@tms.com"
                 className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
                   errors.emailId ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                 }`}

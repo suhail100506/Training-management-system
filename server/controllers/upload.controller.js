@@ -84,7 +84,7 @@ const downloadTemplate = async (req, res, next) => {
       sampleRow = [
         'S10001',
         'abc',
-        'abc@kmg.com',
+        'abc@tms.com',
         'Senior Engineer',
         'Product Development',
         'R&D',
@@ -107,8 +107,8 @@ const downloadTemplate = async (req, res, next) => {
         ['Superannuation Date', 'No', 'DD/MM/YYYY or YYYY-MM-DD', 'Retirement date (must be >= Date of Joining).']
       ];
 
-      filenameExcel = 'KMG_TMS_Staff_Upload_Template.xlsx';
-      filenameCsv = 'KMG_TMS_Staff_Upload_Template.csv';
+      filenameExcel = 'TMS_Staff_Upload_Template.xlsx';
+      filenameCsv = 'TMS_Staff_Upload_Template.csv';
     } else {
       headers = [
         'Staff Number',
@@ -134,12 +134,12 @@ const downloadTemplate = async (req, res, next) => {
       sampleRow = [
         'S10001',
         'abc',
-        'abc@kmg.com',
+        'abc@tms.com',
         'Product Development',
         'React and Tailwind Integration',
         'MOD-RCT-201',
         'John Doe',
-        'KMG Tech Academy',
+        'TMS Tech Academy',
         'OT',
         'Online',
         '12.5',
@@ -173,8 +173,8 @@ const downloadTemplate = async (req, res, next) => {
         ['Remarks', 'No', 'String', 'Optional remarks/notes about the training.']
       ];
 
-      filenameExcel = 'KMG_TMS_Bulk_Upload_Template.xlsx';
-      filenameCsv = 'KMG_TMS_Bulk_Upload_Template.csv';
+      filenameExcel = 'TMS_Bulk_Upload_Template.xlsx';
+      filenameCsv = 'TMS_Bulk_Upload_Template.csv';
     }
 
     if (format === 'csv') {

@@ -51,7 +51,7 @@ export const useExport = () => {
 
       const summaryStr = summaryKeys.join('_').replace(/[^a-zA-Z0-9_]/g, '') || 'All';
       
-      const filename = `KMG_TMS_${reportType.toUpperCase()}_${summaryStr}_${yyyymmdd}.${extension}`;
+      const filename = `TMS_${reportType.toUpperCase()}_${summaryStr}_${yyyymmdd}.${extension}`;
       
       saveAs(blob, filename);
       

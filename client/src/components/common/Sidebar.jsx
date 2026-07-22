@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { isSuperAdmin } from '../../utils/roleHelpers';
-import cdotLogo from '../../assets/CDOT_logo.gif';
+import tmsLogo from '../../assets/logo.svg';
 import { 
   LayoutDashboard, 
   FileSpreadsheet, 
@@ -30,11 +30,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const { user } = useAuth();
   const [reportsOpen, setReportsOpen] = useState(false);
   const [recordsOpen, setRecordsOpen] = useState(false);
-  const [systemName, setSystemName] = useState(() => localStorage.getItem('tms_systemName') || 'CDOT TMS');
+  const [systemName, setSystemName] = useState(() => localStorage.getItem('tms_systemName') || 'TMS Portal');
 
   useEffect(() => {
     const handleSettingsChange = () => {
-      setSystemName(localStorage.getItem('tms_systemName') || 'CDOT TMS');
+      setSystemName(localStorage.getItem('tms_systemName') || 'TMS Portal');
     };
     window.addEventListener('tms_settings_changed', handleSettingsChange);
     return () => {
@@ -92,7 +92,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           {/* Brand Logo */}
           <div className="h-16 flex items-center px-5 border-b border-slate-200/50 dark:border-slate-800/50 bg-brand-700">
             <Link to="/dashboard" className="flex items-center space-x-2.5">
-              <img src={cdotLogo} alt="CDOT Logo" className="w-8 h-8 object-contain bg-white rounded-lg p-0.5" />
+              <img src={tmsLogo} alt="TMS Logo" className="w-8 h-8 object-contain bg-white/10 rounded-lg p-1" />
               <span 
                 className="font-bold text-white tracking-wide text-lg truncate max-w-[170px] inline-block"
                 title={systemName}
@@ -109,7 +109,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">{user?.name || 'Super Admin'}</p>
-              <p className="text-[10px] text-slate-500 truncate">{user?.email || 'admin@kmg.com'}</p>
+              <p className="text-[10px] text-slate-500 truncate">{user?.email || 'admin@tms.com'}</p>
               <span className="inline-block mt-1 px-2 py-0.5 text-[8.5px] font-bold tracking-wider uppercase rounded-full bg-brand-50 text-brand-700 border border-brand-100 dark:bg-brand-950/50 dark:text-brand-400 dark:border-brand-900/50">
                 {user?.role === 'super_admin' ? 'Super Admin' : 'Admin'}
               </span>

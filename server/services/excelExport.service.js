@@ -9,7 +9,7 @@ const generateExcel = async (reportName, data, filters = {}) => {
   const worksheet = workbook.addWorksheet(sheetName.toUpperCase());
 
   // 1. Add Title & Metadata Block
-  const titleRow = worksheet.addRow([`KMG TMS - ${reportName.toUpperCase()} REPORT`]);
+  const titleRow = worksheet.addRow([`TMS - ${reportName.toUpperCase()} REPORT`]);
   titleRow.getCell(1).font = { name: 'Segoe UI', size: 14, bold: true, color: { argb: 'FF1F497D' } };
   
   const genDateStr = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });

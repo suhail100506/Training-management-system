@@ -60,7 +60,7 @@ const BulkUploadPage = () => {
       const ext = format === 'csv' ? 'csv' : 'xlsx';
       const type = format === 'csv' ? 'text/csv' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       const blob = new Blob([response.data], { type });
-      saveAs(blob, `KMG_TMS_Bulk_Upload_Template.${ext}`);
+      saveAs(blob, `TMS_Bulk_Upload_Template.${ext}`);
       toast.success('Template downloaded.');
     } catch (err) {
       console.error(err);
@@ -119,7 +119,7 @@ const BulkUploadPage = () => {
     try {
       const response = await uploadApi.downloadErrorReport(batchId);
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, `KMG_TMS_Upload_Error_Report_${batchId}.xlsx`);
+      saveAs(blob, `TMS_Upload_Error_Report_${batchId}.xlsx`);
       toast.success('Error report downloaded.');
     } catch (err) {
       console.error(err);

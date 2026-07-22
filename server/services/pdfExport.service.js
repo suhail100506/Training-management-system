@@ -62,7 +62,7 @@ const generatePDFDefinition = (reportName, data, filters = {}) => {
 
   const docDefinition = {
     content: [
-      { text: 'KMG Training Management System', style: 'brandTitle' },
+      { text: 'Training Management System', style: 'brandTitle' },
       { text: `${reportName.toUpperCase()} REPORT`, style: 'reportTitle' },
       { text: `Generated: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} (IST)`, style: 'metaText' },
       { text: `Filters Applied: ${filterSummary}`, style: 'metaText' },

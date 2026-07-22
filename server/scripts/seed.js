@@ -29,8 +29,8 @@ const seedDatabase = async () => {
 
     // 2. Create Super Admin User
     console.log('Checking for Super Admin User...');
-    const superAdminEmail = 'superadmin@kmg.com';
-    let superAdmin = await User.findOne({ email: superAdminEmail });
+    const superAdminEmail = 'superadmin@tms.com';
+    let superAdmin = await User.findOne({ $or: [{ email: superAdminEmail }, { staffNumber: 'S00001' }] });
 
     if (!superAdmin) {
       console.log('Creating Super Admin user...');
@@ -49,7 +49,9 @@ const seedDatabase = async () => {
       await superAdmin.save();
       console.log('Super Admin user created successfully.');
     } else {
-      console.log('Super Admin user already exists.');
+      superAdmin.email = superAdminEmail;
+      await superAdmin.save();
+      console.log('Super Admin user updated successfully.');
     }
 
     // Also check if Super Admin is in Staff list
@@ -69,6 +71,9 @@ const seedDatabase = async () => {
       });
       await saStaff.save();
       console.log('Super Admin added to Staff master list.');
+    } else {
+      saStaff.emailId = superAdminEmail;
+      await saStaff.save();
     }
 
     // 3. Seed Master Data

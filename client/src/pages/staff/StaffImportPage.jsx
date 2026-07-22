@@ -61,7 +61,7 @@ const StaffImportPage = () => {
       const ext = format === 'csv' ? 'csv' : 'xlsx';
       const type = format === 'csv' ? 'text/csv' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       const blob = new Blob([response.data], { type });
-      saveAs(blob, `KMG_TMS_Staff_Upload_Template.${ext}`);
+      saveAs(blob, `TMS_Staff_Upload_Template.${ext}`);
       toast.success('Staff import template downloaded.');
     } catch (err) {
       console.error(err);
@@ -120,7 +120,7 @@ const StaffImportPage = () => {
     try {
       const response = await uploadApi.downloadErrorReport(batchId);
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, `KMG_TMS_Staff_Upload_Error_Report_${batchId}.xlsx`);
+      saveAs(blob, `TMS_Staff_Upload_Error_Report_${batchId}.xlsx`);
       toast.success('Error report downloaded.');
     } catch (err) {
       console.error(err);

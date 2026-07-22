@@ -44,7 +44,7 @@ const UploadBatchDetailPage = () => {
     try {
       const response = await uploadApi.downloadErrorReport(batchId);
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, `KMG_TMS_Upload_Error_Report_${batchId}.xlsx`);
+      saveAs(blob, `TMS_Upload_Error_Report_${batchId}.xlsx`);
       toast.success('Error report downloaded.');
     } catch (err) {
       console.error(err);

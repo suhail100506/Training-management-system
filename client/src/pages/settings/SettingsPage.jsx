@@ -7,7 +7,7 @@ import PageTitle from '../../components/common/PageTitle';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SettingsPage = () => {
-  const [systemName, setSystemName] = useState(() => localStorage.getItem('tms_systemName') || 'CDOT Training Management System');
+  const [systemName, setSystemName] = useState(() => localStorage.getItem('tms_systemName') || 'Training Management System');
   const [fyStartMonth, setFyStartMonth] = useState(() => localStorage.getItem('tms_fyStartMonth') || '4'); // 4 = April, 1 = January
   const [defaultLimit, setDefaultLimit] = useState(() => localStorage.getItem('tms_defaultLimit') || '25');
   const [minPasswordLength, setMinPasswordLength] = useState(() => localStorage.getItem('tms_minPasswordLength') || '8');

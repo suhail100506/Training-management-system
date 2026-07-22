@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const PageTitle = ({ title, subtitle }) => {
   useEffect(() => {
     const updateTitle = () => {
-      const savedName = localStorage.getItem('tms_systemName') || 'CDOT Training Management System';
+      const savedName = localStorage.getItem('tms_systemName') || 'Training Management System';
       document.title = `${title} — ${savedName}`;
     };
 

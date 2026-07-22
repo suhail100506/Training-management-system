@@ -365,7 +365,7 @@ const TrainingAddPage = () => {
                 <label className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Training Institute Name</label>
                 <input
                   type="text"
-                  placeholder="e.g. KMG IT Solutions"
+                  placeholder="e.g. TMS IT Solutions"
                   className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white"
                   {...register('trainingInstituteName')}
                 />

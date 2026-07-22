@@ -220,7 +220,7 @@ const processBulkUpload = async (filePath, batchId, userId) => {
 
       // Extract optional staff fields from spreadsheet if available
       const staffName = String(getVal('staffName')).trim() || `Staff ${staffNumber}`;
-      const emailId = String(getVal('emailId')).trim() || `${staffNumber.toLowerCase()}@kmg.com`;
+      const emailId = String(getVal('emailId')).trim() || `${staffNumber.toLowerCase()}@tms.com`;
       const designation = String(getVal('designation')).trim() || '-';
       const groupName = String(getVal('groupName')).trim() || '-';
       const productDivisionCategory = String(getVal('productDivisionCategory')).trim() || '-';

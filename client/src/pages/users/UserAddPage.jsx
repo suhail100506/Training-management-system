@@ -147,7 +147,7 @@ const UserAddPage = () => {
               <label className="text-[10px] font-bold text-slate-700 dark:text-slate-350 uppercase tracking-wider">Account Email Address*</label>
               <input
                 type="email"
-                placeholder="e.g. employee@kmg.com"
+                placeholder="e.g. employee@tms.com"
                 className={`w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500 dark:text-white ${
                   errors.email ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                 }`}

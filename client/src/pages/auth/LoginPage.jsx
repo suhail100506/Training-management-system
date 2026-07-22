@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { loginSchema } from '../../utils/validators';
 import useAuth from '../../hooks/useAuth';
-import cdotLogo from '../../assets/CDOT_logo.gif';
+import tmsLogo from '../../assets/logo.svg';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -74,11 +74,11 @@ const LoginPage = () => {
           
           {/* Logo and Brand Header */}
           <div className="text-center space-y-2">
-            <div className="inline-flex p-2.5 bg-white rounded-2xl shadow-md border border-slate-250/20">
-              <img src={cdotLogo} alt="CDOT Logo" className="w-12 h-12 object-contain" />
+            <div className="inline-flex p-2.5 bg-brand-700 rounded-2xl shadow-md border border-slate-250/20">
+              <img src={tmsLogo} alt="TMS Logo" className="w-10 h-10 object-contain text-white" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-              {localStorage.getItem('tms_systemName') || 'CDOT Training System'}
+              {localStorage.getItem('tms_systemName') || 'Training Management System'}
             </h2>
             <p className="text-sm text-slate-500">Sign in to manage training records</p>
           </div>
@@ -94,7 +94,7 @@ const LoginPage = () => {
                 </span>
                 <input
                   type="email"
-                  placeholder="name@kmg.com"
+                  placeholder="name@tms.com"
                   className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 text-slate-900 placeholder-slate-400 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200 ${
                     errors.email ? 'border-red-500 focus:ring-red-400' : 'border-slate-200'
                   }`}
