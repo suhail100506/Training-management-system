@@ -66,7 +66,7 @@ app.use('/api/v1/audit', auditRoutes);
 
 // Heartbeat route
 app.get('/', (req, res) => {
-  res.json({ success: true, message: 'KMG Training Management System API is active' });
+  res.json({ success: true, message: 'Training Management System API is active' });
 });
 
 // Global Error Handler
